@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/data/questions.dart';
-import 'package:quiz_app/questions_summary.dart';
+import 'package:quiz_app/questions_summary/questions_summary.dart';
 
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen({super.key, required this.chosenAnswers});
+  const ResultsScreen(
+      {super.key,
+      required this.chosenAnswers,
+      required this.onRestartButtonPressed});
 
   final List<String> chosenAnswers;
+  final void Function() onRestartButtonPressed;
 
-  List<Map<String, Object>> getSummaryData() {
+  List<Map<String, Object>> get summarData {
     final List<Map<String, Object>> summary = [];
 
     for (var i = 0; i < chosenAnswers.length; i++) {
@@ -26,9 +31,8 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final summaryDate = getSummaryData();
     final numTotalQuestions = questions.length;
-    final numCorrectQuestions = summaryDate
+    final numCorrectQuestions = summarData
         .where((element) => element['user_answer'] == element['correct_answer'])
         .length;
 
@@ -39,12 +43,30 @@ class ResultsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!'),
-            const SizedBox(height: 30),
-            QuestionsSummary(summaryData: summaryDate),
-            TextButton(
-              onPressed: () {},
-              child: const Text('Restart Quiz'),
+            Text(
+              'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.lato(
+                color: const Color.fromARGB(255, 201, 153, 251),
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            QuestionsSummary(
+              summaryData: summarData,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            TextButton.icon(
+              onPressed: onRestartButtonPressed,
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+              ),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Restart Quiz'),
             ),
           ],
         ),

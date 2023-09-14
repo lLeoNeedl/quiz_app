@@ -34,6 +34,13 @@ class _QuizState extends State<Quiz> {
     }
   }
 
+  void restartQuiz() {
+    setState(() {
+      selectedAnswers.clear();
+      activeScreen = 'questions_screen';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget screenWidget = StartScreen(switchScreen: switchScreen);
@@ -48,7 +55,9 @@ class _QuizState extends State<Quiz> {
         break;
 
       case 'results_screen':
-        screenWidget = ResultsScreen(chosenAnswers: selectedAnswers);
+        screenWidget = ResultsScreen(
+            chosenAnswers: selectedAnswers,
+            onRestartButtonPressed: restartQuiz);
         break;
     }
 
@@ -59,8 +68,8 @@ class _QuizState extends State<Quiz> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 78, 13, 151),
-                Color.fromARGB(255, 107, 15, 168),
+                Color.fromARGB(255, 42, 29, 142),
+                Color.fromARGB(255, 40, 68, 160),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,

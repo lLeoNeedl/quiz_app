@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/questions_summary/question_details.dart';
+import 'package:quiz_app/questions_summary/question_identifier.dart';
 
 class QuestionsSummary extends StatelessWidget {
   const QuestionsSummary({super.key, required this.summaryData});
@@ -8,23 +10,20 @@ class QuestionsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 400,
       child: SingleChildScrollView(
         child: Column(
           children: summaryData
               .map(
                 (data) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(((data['question_index'] as int) + 1).toString()),
+                    QuestionIdentifier(data),
+                    const SizedBox(
+                      width: 20,
+                    ),
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text(data['question'] as String),
-                          const SizedBox(height: 5),
-                          Text(data['user_answer'] as String),
-                          Text(data['correct_answer'] as String),
-                        ],
-                      ),
+                      child: QuestionDetails(data),
                     ),
                   ],
                 ),
